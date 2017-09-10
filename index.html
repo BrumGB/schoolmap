@@ -7,7 +7,8 @@
     <title>School Map</title>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-28fhKsZeY3gFvw3RMWXMnBIjQNAi95A"></script>
     <script type="text/javascript" src="js/markerclusterer.js"></script>
 </head>
 
@@ -20,17 +21,19 @@
 				<div id="map"></div>
 			</div>
 			<div class="col-md-6">
-				<div class="form-group row">
-					<div class="col-xs-8">
-						<input type="text" name="postcode" id="postcode" class="form-control" placeholder="Postcode">
+				<form class="postcode-search">
+					<div class="form-group row">
+						<div class="col-xs-8">
+							<input type="text" name="postcode" id="postcode" class="form-control" placeholder="Postcode" required>
+						</div>
+						<div class="col-xs-4">
+							<input type="submit" value="Search" id="search" class="btn btn-primary">
+						</div>
 					</div>
-					<div class="col-xs-4">
-						<input type="button" value="Search" id="search" class="btn btn-primary">
-					</div>
-				</div>
-				<div class="btn-group">
-				  <button type="button" class="btn btn-primary active">Primary Schools</button>
-				  <button type="button" class="btn btn-primary">Secondary Schools</button>
+				</form>
+				<div class="btn-group school-type">
+				  <button type="button" class="btn btn-primary active" data-type="primarySchools">Primary Schools</button>
+				  <button type="button" class="btn btn-primary" data-type="secondarySchools">Secondary Schools</button>
 				</div>
 		        <div class="table-responsive" id="school-results">
 		        	<table class="table table-bordered table-stripped table-condensed">

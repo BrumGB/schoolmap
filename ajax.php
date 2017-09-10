@@ -1,13 +1,12 @@
 <?php 
-$lat = $_GET['lat'];
-$lng = $_GET['lng'];
+$postcode = $_GET['postcode'];
 $ch = curl_init();
 $timestamp = str_replace('+00:00', '.000Z', gmdate('c'));
 
 $data = array(
 	'apiKey' => 'TweepCareers_BsfNjncxjqn',
 	'timestamp' => $timestamp,
-	'postcode' => 'SW11 5QW',
+	'postcode' => $postcode,
 	);
 $searchUrl = '/search?'.http_build_query($data); 
 $secret = "3gfpSfHgmHbHFmtjcb&iytQc6NetExatsvbsvbcikqm8fbfh)Fccb2Df*hSqcdAm{ufgpvwnvz";
