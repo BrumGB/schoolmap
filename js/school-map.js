@@ -52,34 +52,39 @@ schoolMap.showMarkers = function() {
 
     var results = document.querySelector('#school-results table tbody');
     results.innerHTML = '';
+    if (schoolMap.schools.length){
+        for (var i = 0; i < schoolMap.schools.length; i++) {
+            var school = schoolMap.schools[i];
+            var rating = school.schoolRating?(school.schoolRating.body+': '+school.schoolRating.label):'';
+            var row = document.createElement('TR');
+            row.innerHTML = '<td class="text-center">'+(i+1)+'</td>'
+                +'<td><a href="javascript:;" class="school-name">'+school.name+'</a></td>'
+                +'<td>'+rating+'</td>'
+                +'<td>'+school.type+' - '+school.subType+'</td>';
 
-    for (var i = 0; i < schoolMap.schools.length; i++) {
-        var school = schoolMap.schools[i];
-        var rating = school.schoolRating?(school.schoolRating.body+': '+school.schoolRating.label):'';
-        var row = document.createElement('TR');
-        row.innerHTML = '<td class="text-center">'+(i+1)+'</td>'
-            +'<td><a href="javascript:;" class="school-name">'+school.name+'</a></td>'
-            +'<td>'+rating+'</td>'
-            +'<td>'+school.type+' - '+school.subType+'</td>';
+            results.appendChild(row);
 
-        results.appendChild(row);
+            var latLng = new google.maps.LatLng(schoolMap.schools[i].latitudeLongitude.lat,
+                schoolMap.schools[i].latitudeLongitude.lng);
 
-        var latLng = new google.maps.LatLng(schoolMap.schools[i].latitudeLongitude.lat,
-            schoolMap.schools[i].latitudeLongitude.lng);
+            var imageUrl = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+(i+1)+'|FF3000|FFFFFF';
+            var markerImage = new google.maps.MarkerImage(imageUrl,
+                new google.maps.Size(24, 32));
 
-        var imageUrl = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+(i+1)+'|FF3000|FFFFFF';
-        var markerImage = new google.maps.MarkerImage(imageUrl,
-            new google.maps.Size(24, 32));
+            var marker = new google.maps.Marker({
+                'position': latLng,
+                'icon': markerImage
+            });
 
-        var marker = new google.maps.Marker({
-            'position': latLng,
-            'icon': markerImage
-        });
+            marker.row = row;
 
-        var fn = schoolMap.markerClickFunction(schoolMap.schools[i], marker);
-        google.maps.event.addListener(marker, 'click', fn);
-        google.maps.event.addDomListener($(row).find('.school-name')[0], 'click', fn);
-        schoolMap.markers.push(marker);
+            var fn = schoolMap.markerClickFunction(schoolMap.schools[i], marker);
+            google.maps.event.addListener(marker, 'click', fn);
+            google.maps.event.addDomListener($(row).find('.school-name')[0], 'click', fn);
+            schoolMap.markers.push(marker);
+        }
+    }else{
+        results.innerHTML = '<tr><td colspan="4" class="text-center">No results</td></tr>'
     }
     //Draw markers
     // schoolMap.markerClusterer = new MarkerClusterer(schoolMap.map, schoolMap.markers, { imagePath: 'images/m' });
@@ -109,6 +114,8 @@ schoolMap.markerClickFunction = function(school, marker) {
         schoolMap.infoWindow.open(schoolMap.map, marker);
         schoolMap.map.panTo(marker.position);
         schoolMap.map.setZoom(14);
+        $('#school-results table tbody tr').removeClass('selected');
+        marker.row.className = 'selected';
     };
 };
 
